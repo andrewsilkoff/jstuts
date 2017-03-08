@@ -1,0 +1,176 @@
+<!DOCTYPE HTML>
+
+<html>
+	
+<head>
+<title>Test JS</title>
+<meta charset="utf-8">
+
+<style type="text/css">
+	#container {
+		width: 460px;
+		height: 700px;
+		line-height: 400px;
+		background: green;
+		text-align: center;
+		color: white;
+		margin: auto;
+	}
+
+ul li:nth-child(5) {
+
+}
+
+img {
+	width: 100%;
+}
+
+.likes {
+	width: 50px;
+	height: 50px;
+	background: grey;
+	float: right;
+	line-height: 50px;
+
+}
+
+.item {
+	width: 100%;
+	box-sizing: border-box;
+	padding: 5px;
+	background: lightgrey;
+	overflow: auto;
+}
+
+#dragme {
+	position: absolute;
+	width: 200px;
+	height: 70px;
+	background: orange;
+}
+
+</style>	
+</head>
+
+
+<body>
+
+<div id="dragme"></div>
+
+<div id="container">
+
+	<!-- <ul id="list">
+		<li id="item" onclick="changeTxt()">Text 1</li>
+		<li id="item">Text 1</li>
+		<li>Text 2</li>
+		<li>Text 3</li>
+	</ul> -->
+
+</div>
+
+<script type="text/javascript">
+
+var li = document.getElementById("item");
+var div = document.getElementById("container");
+var dragDiv = document.getElementById("dragme");
+
+// li.onclick = changeTxt;
+// li.onclick = addContent;
+
+// li.onclick = function() {
+// 	changeTxt();
+// 	addContent();
+// };
+
+var trigger = true;
+
+// li.addEventListener("click", changeTxt);
+// li.addEventListener("click", addContent);
+
+function changeTxt() {
+
+	li.textContent = "New text";
+
+};
+
+function addContent() {
+	li.innerHTML += " And more text.";
+	if(trigger) {		
+		trigger = false;
+		li.removeEventListener("click", changeTxt);
+	}
+	
+};
+
+var allLi = document.getElementsByTagName("li");
+for( var i = 0; i < allLi.length; i++) {
+	allLi[i].onclick = function(event) {
+		changeUniText(event, "Hola everybody!");
+	}
+}
+
+function changeUniText(event, text) {
+	var clickedLi = event.target;
+	//var type = event.type;
+	clickedLi.textContent = text;
+
+};
+
+function getMouse(e) {
+	var scrX = e.screenX;
+	var scrY = e.screenY;
+	var pgX = e.pageX;
+	var pgY = e.pageY;
+	var clX = e.clientX;
+	var clY = e.clientY;
+
+	div.innerHTML = scrX + " " + scrY + " " + pgX + " " + pgY + " " + clX + " " + clY;
+
+};
+
+var deltaX;
+var deltaY;
+
+function dragBlock(e) {
+	var clX = e.clientX;
+	var clY = e.clientY;
+	// dragDiv.style.left = clX + "px";
+	// dragDiv.style.top = clY + "px";
+	dragDiv.style.left = (clX - deltaX) + "px";
+	dragDiv.style.top = (clY - deltaY) + "px";
+};
+
+function startDrag(e) {
+	var mX = e.clientX;
+	var mY = e.clientY;
+	var bX = dragDiv.offsetLeft;
+	var bY = dragDiv.offsetTop;
+
+	console.log(bX + " " +  bY);
+
+	deltaX = mX - bX;
+	deltaY = mY - bY;
+
+	window.addEventListener("mousemove", dragBlock);
+}
+
+function stopDrag() {
+	window.removeEventListener("mousemove", dragBlock);
+
+}
+
+dragDiv.onmousedown = startDrag;
+dragDiv.onmouseup = stopDrag;
+
+
+
+
+
+
+
+</script>
+	
+</body>
+
+
+</html>
